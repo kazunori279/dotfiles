@@ -74,15 +74,17 @@ gcutil addforwardingrule "nginx" --region="us-central1" --target="nginx"
 
 ## Add nginx (2 core x 70)
 ```
+NORIKRA_IP=<<Norikra internal IP>>
+
 echo nginx{0..69} > nginx_hosts
 
-gcutil addinstance \
+cat nginx_hosts | xargs -n1 -P $(cat nginx_hosts | wc -w) \
+  gcutil addinstance \
   --zone="us-central1-b" \
   --machine_type="n1-standard-2" \
   --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
   --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/bigquery" \
-  --metadata=startup-"script:sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx-bq" \
-  $(cat nginx_hosts)
+  --metadata=startup-"script:sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx-bq"
 
 gcutil addtargetpoolinstance nginx \
   --region="us-central1" \
@@ -91,15 +93,17 @@ gcutil addtargetpoolinstance nginx \
 
 ## Add Apache Bench (2 core x 20)
 ```
+NGINX_IP=
+
 echo ab{0..19} > ab_hosts
 
-gcutil addinstance \
+cat ab_hosts | xargs -n1 -P $(cat nginx_hosts | wc -w) \
+  gcutil addinstance \
   --zone="us-central1-b" \
   --machine_type="n1-standard-2" \
   --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
   --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control" \
-  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://$NGINX_IP/" \
-  $(cat ab_hosts)
+  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://$NGINX_IP/"
 ```
 
 # Cleaning up
