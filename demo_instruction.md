@@ -1,10 +1,10 @@
 # Demo #1 Dashboard & BigQuery
 
-## BigQuery for historical rps chart
+## BigQuery for historical RPS chart
 ```
 SELECT
-  STRFTIME_UTC_USEC(time * 1000000, "%Y-%m-%d %H:%M") as tstamp, 
-  count(*) / 60 as rps 
+  LEFT(STRFTIME_UTC_USEC(time * 1000000, "%Y-%m-%d %H:%M:%S"), 18) + '0' as tstamp, 
+  count(*) / 10 as rps 
 FROM gcp_samples.nginx0,gcp_samples.nginx1,gcp_samples.nginx2
 GROUP BY tstamp ORDER BY tstamp DESC;
 ```
