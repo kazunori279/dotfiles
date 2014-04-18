@@ -1,4 +1,5 @@
-# Lambda Dashboard Demo
+
+# Lambda Dashboard: BigQuery
 
 ## BigQuery for historical rps chart
 ```
@@ -9,10 +10,24 @@ FROM gcp_samples.nginx0,gcp_samples.nginx1,gcp_samples.nginx2
 GROUP BY tstamp ORDER BY tstamp DESC;
 ```
 
-## Single Apache Bench 
+# Lambda Dashboard: Norikra CEP
+
+## Add Norikra server
+
+* Create GCE instance
+* Run Docker image for Norikra
+* See Norikra UI on browser
+
+## Add GCE instance for nginx
+
+* Create GCE instance
+* Run Docker image for nginx
+* See nginx welcome page on browser
+
+## Run Apache Bench
 
 ```
-ab -c 5 -n 1000000 http://107.178.221.78/
+ab -c 5 -n 1000000 <<nginx IP>>
 ```
 
 ## Query for rps
@@ -41,43 +56,15 @@ from dstat.win:time(5 sec)
 output snapshot every 3 sec
 ```
 
-## Apache Bench x 20
-```
-echo ab{0..19} > ab_hosts
+# Lambda Dashboard: Large Deployment
 
-gcutil addinstance \
-  --zone="us-central1-b" \
-  --machine_type="n1-standard-2" \
-  --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
-  --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control" \
-  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://107.178.221.78/" \
-  $(cat ab_hosts)
-```
-
-
-# Setting up one Norikra server
-
-## adding Norikra instance
-
-```
-gcutil addinstance \
-  --zone="us-central1-b" \
-  --machine_type="n1-standard-2" \
-  --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
-  --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control" \
-  --metadata=startup-"script:sudo docker run -p 26578:26578 -p 26571:26571 -p 24224:24224 -p 24224:24224/udp -e GAS_URL=https://script.google.com/macros/s/AKfycbzHIhSB6Gm-b7Ix7Sc1aE0EpjsJTpwnWqcyYbr8LCLTU0CTSLy4/exec -t -i -d kazunori279/fluentd-norikra-gas" \
-  demo-norikra0
-```
-
-# Setting up Load Balancer and 70 nginx instances
-
-## adding LB
+## Add Load Balancing
 ```
 gcutil addtargetpool "nginx" --region="us-central1"
 gcutil addforwardingrule "nginx" --region="us-central1" --target="nginx"
 ```
 
-## adding nginx instances
+## Add nginx (2 core x 70)
 ```
 echo nginx{0..69} > nginx_hosts
 
@@ -92,6 +79,19 @@ gcutil addinstance \
 gcutil addtargetpoolinstance nginx \
   --region="us-central1" \
   --instances="$(cat nginx_hosts | sed -e 's/\(\w*\)/us-central1-b\/instances\/\1,/g' | sed -e 's/\(.*\),/\1/')"
+```
+
+## Add Apache Bench (2 core x 20)
+```
+echo ab{0..19} > ab_hosts
+
+gcutil addinstance \
+  --zone="us-central1-b" \
+  --machine_type="n1-standard-2" \
+  --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
+  --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control" \
+  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://107.178.221.78/" \
+  $(cat ab_hosts)
 ```
 
 # Cleaning up
