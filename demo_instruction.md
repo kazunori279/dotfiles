@@ -67,7 +67,8 @@ output snapshot every 3 sec
 
 ## Add Load Balancing
 ```
-gcutil addtargetpool "nginx" --region="us-central1"
+gcutil addhttphealthcheck "http-check"
+gcutil addtargetpool "nginx" --region="us-central1" --health_checks="http-check"
 gcutil addforwardingrule "nginx" --region="us-central1" --target="nginx"
 ```
 
