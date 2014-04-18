@@ -26,9 +26,16 @@ sudo docker run -p 26578:26578 -p 26571:26571 -p 24224:24224 -p 24224:24224/udp 
 * Run Docker image for nginx
 ```
 NORIKRA_IP=<<Norikra server internal IP>>
-sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx
+sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx-bq
 ```
 * See nginx welcome page on browser
+
+## Query for RPS
+```
+select sum(count) / 15 as rps 
+from nginx_count_access.win:time(15 sec) 
+output snapshot every 3 sec
+```
 
 ## Run Apache Bench
 
@@ -37,21 +44,7 @@ NGINX_IP=<<nginx server external IP>>
 ab -c 5 -n 1000000 http://NGINX_IP/
 ```
 
-## Query for RPS
-```
-select count(*) / 5 as rps 
-from nginx_access.win:time(5 sec) 
-output snapshot every 3 sec
-```
-
 # Demo #3 Large Deployment
-
-## Query for aggregated RPS
-```
-select sum(count) / 15 as rps 
-from nginx_count_access.win:time(15 sec) 
-output snapshot every 3 sec
-```
 
 ## Query for number of hosts
 ```
