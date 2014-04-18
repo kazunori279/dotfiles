@@ -22,7 +22,7 @@ sudo docker run -p 26578:26578 -p 26571:26571 -p 24224:24224 -p 24224:24224/udp 
 
 ## Add GCE instance for nginx
 
-* Create GCE instance
+* Create GCE instance (with BigQuery access)
 * Run Docker image for nginx
 ```
 NORIKRA_IP=<<Norikra server internal IP>>
