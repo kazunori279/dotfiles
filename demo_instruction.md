@@ -1,6 +1,6 @@
 # Lambda Dashboard Demo
 
-## Register BigQuery Query for historical rps chart
+## BigQuery for historical rps chart
 ```
 "SELECT
   STRFTIME_UTC_USEC(time * 1000000, ""%Y-%m-%d %H:%M"") as tstamp, 
@@ -9,27 +9,27 @@ FROM gcp_samples.nginx0,gcp_samples.nginx1,gcp_samples.nginx2
 GROUP BY tstamp ORDER BY tstamp DESC;"
 ```
 
-## Test with single Apache Bench instance
+## Single Apache Bench 
 
 ```
 ab -c 5 -n 1000000 http://107.178.221.78/
 ```
 
-## Norikra query for rps
+## Query for rps
 ```
 select sum(count) / 15 as rps 
 from nginx_count_access.win:time(15 sec) 
 output snapshot every 3 sec
 ```
 
-## Norikra query for number of hosts
+## Query for number of hosts
 ```
 select count(distinct dstat.hostname) as hosts
 from dstat.win:time(15 sec) 
 output snapshot every 3 sec
 ```
 
-## Norikra query for CPU stats
+## Query for CPU stats
 ```
 select 
   avg(cast(dstat.dstat.total_cpu_usage.usr,double)) as usr, 
@@ -41,7 +41,7 @@ from dstat.win:time(5 sec)
 output snapshot every 3 sec
 ```
 
-## Test with 20 Apache Bench instance
+## Apache Bench x 20
 ```
 echo ab{0..19} > ab_hosts
 
