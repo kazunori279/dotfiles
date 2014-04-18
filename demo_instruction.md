@@ -93,7 +93,7 @@ gcutil addtargetpoolinstance nginx \
 
 ## Add Apache Bench (2 core x 20)
 ```
-NGINX_IP=
+LB_IP=<<Load Balancing IP>>
 
 echo ab{0..19} > ab_hosts
 
@@ -103,7 +103,7 @@ cat ab_hosts | xargs -n1 -P $(cat nginx_hosts | wc -w) \
   --machine_type="n1-standard-2" \
   --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
   --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control" \
-  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://$NGINX_IP/"
+  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://$LB_IP/"
 ```
 
 # Cleaning up
