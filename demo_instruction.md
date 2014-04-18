@@ -1,4 +1,3 @@
-
 # Lambda Dashboard: BigQuery
 
 ## BigQuery for historical rps chart
@@ -16,18 +15,26 @@ GROUP BY tstamp ORDER BY tstamp DESC;
 
 * Create GCE instance
 * Run Docker image for Norikra
+```
+sudo docker run -p 26578:26578 -p 26571:26571 -p 24224:24224 -p 24224:24224/udp -e GAS_URL=https://script.google.com/macros/s/AKfycbzHIhSB6Gm-b7Ix7Sc1aE0EpjsJTpwnWqcyYbr8LCLTU0CTSLy4/exec -t -i -d kazunori279/fluentd-norikra-gas
+```
 * See Norikra UI on browser
 
 ## Add GCE instance for nginx
 
 * Create GCE instance
 * Run Docker image for nginx
+```
+NORIKRA_IP=<<Norikra server internal IP>>
+sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx
+```
 * See nginx welcome page on browser
 
 ## Run Apache Bench
 
 ```
-ab -c 5 -n 1000000 <<nginx IP>>
+NGINX_IP=<<nginx server external IP>>
+ab -c 5 -n 1000000 http://NGINX_IP/
 ```
 
 ## Query for rps
@@ -73,7 +80,7 @@ gcutil addinstance \
   --machine_type="n1-standard-2" \
   --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
   --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/bigquery" \
-  --metadata=startup-"script:sudo docker run -e NORIKRA_IP=10.240.82.164 -p 80:80 -t -i -d kazunori279/fluentd-nginx-bq" \
+  --metadata=startup-"script:sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx-bq" \
   $(cat nginx_hosts)
 
 gcutil addtargetpoolinstance nginx \
@@ -90,7 +97,7 @@ gcutil addinstance \
   --machine_type="n1-standard-2" \
   --image="https://www.googleapis.com/compute/v1/projects/gcp-samples/global/images/backports-debian-7-wheezy-v20140318-docker-0-9-0" \
   --service_account_scopes="https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.full_control" \
-  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://107.178.221.78/" \
+  --metadata=startup-"script:sudo docker run -t -i -d kazunori279/ab ab -c 500 -n 10000000 http://$NGINX_IP/" \
   $(cat ab_hosts)
 ```
 
