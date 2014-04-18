@@ -37,7 +37,16 @@ NGINX_IP=<<nginx server external IP>>
 ab -c 5 -n 1000000 http://NGINX_IP/
 ```
 
-## Query for rps
+## Query for RPS
+```
+select count(*) / 5 as rps 
+from nginx_access.win:time(5 sec) 
+output snapshot every 3 sec
+```
+
+# Demo #3 Large Deployment
+
+## Query for aggregated RPS
 ```
 select sum(count) / 15 as rps 
 from nginx_count_access.win:time(15 sec) 
@@ -62,8 +71,6 @@ select
 from dstat.win:time(5 sec) 
 output snapshot every 3 sec
 ```
-
-# Demo #3 Large Deployment
 
 ## Add Load Balancing
 ```
