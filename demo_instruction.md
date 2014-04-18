@@ -1,4 +1,4 @@
-# Lambda Dashboard: BigQuery
+# Demo #1 Dashboard & BigQuery
 
 ## BigQuery for historical rps chart
 ```
@@ -9,7 +9,7 @@ FROM gcp_samples.nginx0,gcp_samples.nginx1,gcp_samples.nginx2
 GROUP BY tstamp ORDER BY tstamp DESC;
 ```
 
-# Lambda Dashboard: Norikra CEP
+# Demo #2 Norikra CEP
 
 ## Add Norikra server
 
@@ -63,7 +63,7 @@ from dstat.win:time(5 sec)
 output snapshot every 3 sec
 ```
 
-# Lambda Dashboard: Large Deployment
+# Demo #3 Large Deployment
 
 ## Add Load Balancing
 ```
