@@ -1,5 +1,14 @@
 # Lambda Dashboard Demo
 
+## Register BigQuery Query for historical rps chart
+```
+"SELECT
+  STRFTIME_UTC_USEC(time * 1000000, ""%Y-%m-%d %H:%M"") as tstamp, 
+  count(*) / 60 as rps 
+FROM gcp_samples.nginx0,gcp_samples.nginx1,gcp_samples.nginx2
+GROUP BY tstamp ORDER BY tstamp DESC;"
+```
+
 ## Test with single Apache Bench instance
 
 ```
