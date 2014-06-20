@@ -1,4 +1,4 @@
-# Demo #1 Dashboard & BigQuery
+# Demo #1 BigQuery query execution on the Lambda Dashboard
 
 ## BigQuery for historical RPS chart
 ```
@@ -13,22 +13,22 @@ GROUP BY tstamp ORDER BY tstamp DESC;
 
 ## Add Norikra server
 
-* Create GCE instance
+* Create a GCE instance
 * Run Docker image for Norikra
 ```
-sudo docker run -p 26578:26578 -p 26571:26571 -p 24224:24224 -p 24224:24224/udp -e GAS_URL=https://script.google.com/macros/s/AKfycbzHIhSB6Gm-b7Ix7Sc1aE0EpjsJTpwnWqcyYbr8LCLTU0CTSLy4/exec -t -i -d kazunori279/fluentd-norikra-gas
+sudo docker run -p 26578:26578 -p 26571:26571 -p 24224:24224 -p 24224:24224/udp -e GAS_URL=<<YOUR SPREADSHEET ENDPOINT URL>> -t -i -d kazunori279/fluentd-norikra-gas
 ```
-* See Norikra UI on browser
+* Open Norikra Web UI on browser
 
 ## Add GCE instance for nginx
 
-* Create GCE instance (with BigQuery access)
+* Create a GCE instance (with BigQuery access enabled)
 * Run Docker image for nginx
 ```
 NORIKRA_IP=<<Norikra server internal IP>>
 sudo docker run -e NORIKRA_IP=$NORIKRA_IP -p 80:80 -t -i -d kazunori279/fluentd-nginx-bq
 ```
-* See nginx welcome page on browser
+* Open nginx welcome page on browser
 
 ## Query for RPS
 ```
