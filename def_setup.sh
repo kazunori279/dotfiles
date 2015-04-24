@@ -16,7 +16,7 @@ git init
 # init go
 mkdir ~/go
 curl https://raw.githubusercontent.com/kazunori279/dotfiles/master/bash_profile -o ~/.bash_profile
-source ~/.bash_profile
 curl https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz -o /tmp/golang.tar.gz
 sudo tar -C /usr/local -xzf /tmp/golang.tar.gz
+source ~/.bash_profile
 
