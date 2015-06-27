@@ -6,7 +6,7 @@
 
 # install default tools
 sudo apt-get update
-sudo apt-get -y install tmux git curl build-essential
+sudo apt-get -y install tmux git curl build-essential python-dev
 
 # init git
 curl https://raw.githubusercontent.com/kazunori279/dotfiles/master/gitconfig -o ~/.gitconfig
