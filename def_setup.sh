@@ -13,6 +13,9 @@ curl https://raw.githubusercontent.com/kazunori279/dotfiles/master/gitconfig -o 
 mkdir ~/git
 git init
 
+# install pip
+curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python
+
 # init go
 mkdir ~/go
 curl https://raw.githubusercontent.com/kazunori279/dotfiles/master/bash_profile -o ~/.bash_profile
