@@ -4,6 +4,9 @@
 # Default setups
 #
 
+# set prompt
+echo "export PS1='\u@\W$ '" >> .bash_profile
+
 # install default tools
 sudo apt-get update
 sudo apt-get -y install tmux git curl build-essential python-dev python-setuptools
