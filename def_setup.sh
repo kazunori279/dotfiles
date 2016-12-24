@@ -3,6 +3,8 @@
 #
 # Default setups
 #
+# Run the following line to apply this:
+# > curl https://raw.githubusercontent.com/kazunori279/dotfiles/master/def_setup.sh | sudo bash
 
 # set prompt
 echo "export PS1='\u@\W$ '" >> .bash_profile
