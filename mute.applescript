@@ -2,9 +2,12 @@
 
 AppleScript to toggle Sound input volume between 0 and 0.5 with a global shortcut key.
 
-How to use: You can use Automator to create a new Quick Action and select Library > Utilities > Run AppleScript 
+How to use: 
+- To add a shortcut key: Use Apple Automator to create a new Quick Action and select Library > Utilities > Run AppleScript 
 and paste this code. Then open System Preferences > Keyboard > Shortcuts > Services so you can find the action 
 and specify a shortcut key.
+- On the first run, you'll be asked to change the accessibility setting for each app such as Chrome
+- You can specify the defaultInput_ as your preferred input device 
 
 *)
 
