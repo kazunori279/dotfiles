@@ -6,8 +6,8 @@ How to use:
 - To add a shortcut key: Use Apple Automator to create a new Quick Action and select Library > Utilities > Run AppleScript 
 and paste this code. Then open System Preferences > Keyboard > Shortcuts > Services so you can find the action 
 and specify a shortcut key.
-- On the first run, you'll be asked to change the accessibility setting for each app such as Chrome
-- You can specify the defaultInput_ as your preferred input device 
+- On the first run, you'll be asked to add an accessibility setting for each app such as Chrome.
+- (Option) You can also specify the defaultInput_ property to set your preferred input device 
 
 *)
 
